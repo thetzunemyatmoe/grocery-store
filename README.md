@@ -28,7 +28,7 @@ As someone passionate about learning and web development, I wanted to apply my k
 ## **How to Run**
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/grocery-tracker.git
+   git clone https://github.com/thetzunemyatmoe/grocery-tracker.git
    ```
 2. Navigate to the project directory and install dependencies:
    ```bash
