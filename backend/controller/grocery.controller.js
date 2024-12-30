@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 
 // Controller to fetch all the groceries in the database
 export const getGrocery = async(req, res) => {
+  console.log("wsdtu")
   try {
     const groceries = await Grocery.find({});
     res.status(200).json({ 
@@ -22,13 +23,16 @@ export const getGrocery = async(req, res) => {
 export const createGrocery = async(req, res) => {
   const grocery = req.body
 
+  console.log(grocery)
+
   const groceryObject = new Grocery(grocery);
 
   try {
+    
     await groceryObject.save();
     res.status(200).json({
       success: true,
-      message: "Successful."
+      data: groceryObject
     })
   } catch (error) {
     res.status(500).json({

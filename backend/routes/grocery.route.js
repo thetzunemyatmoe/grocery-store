@@ -1,5 +1,5 @@
 import express from 'express'
-import { createGrocery, deleteGrocery, getGrocery, updateGrocery } from '../controller/grocery.controller.js';
+  import { createGrocery, deleteGrocery, getGrocery, updateGrocery } from '../controller/grocery.controller.js';
 const router = express.Router();
 
 
