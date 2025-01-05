@@ -5,55 +5,45 @@ import { useGroceryStore } from "../store/grocery";
 
 const Navbar = () => {
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [name, setName] = useState('')
-  const [unit, setUnit] = useState('');
-  const [amount, setAmount] = useState(0);
-  const [category, setCategory] = useState('');
-  const [purchasedDate, setPurchasedDate] = useState('');
-  const [expirationDate, setExpirationDate] = useState('');
-  const toast = useToast();
-
-  const { createGrocery } = useGroceryStore()
+  const groceryObj = {
+    name: '',
+    unit: '',
+    quantity: 0,
+    category: '',
+    purchasedDate: '',
+    expirationDate: ''
+  }
+  const [grocery, setGrocery] = useState(groceryObj);
 
   const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleAmountChange = (e) => {
-    setAmount(e.target.value);
-  };
+    setGrocery({ ...grocery, name: e.target.value })
+  }
 
   const handleUnitChange = (e) => {
-    setUnit(e.target.value);
-  };
+    setGrocery({...grocery, unit: e.target.value })
+  }
+
+  const handleQuantityChange = (e) => {
+    setGrocery({...grocery, quantity: e.target.value })
+  }
 
   const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-  };
+    setGrocery({...grocery, category: e.target.value })
+  }
 
   const handlePurchasedDateChange = (e) => {
-    setPurchasedDate(e.target.value);
-  };
+    setGrocery({...grocery, purchasedDate: e.target.value })
+  }
 
   const handleExpirationDateChange = (e) => {
-    setExpirationDate(e.target.value);
-  };
+    setGrocery({...grocery, expirationDate: e.target.value })
+  }
 
+  // Handles adding a grocery item.
   const handleAddGrocery = async () => {
-    const newGrocery = {
-      name,           // Use the value of the name state
-      "quantity": amount,           // Use the value of the unit state
-      unit,         // Use the value of the amount state
-      category,       // Use the value of the category state
-      purchasedDate,  // Use the value of the purchasedDate state
-      expirationDate  // Use the value of the expirationDate state
-    }
+    console.log(grocery);
     
-    // Now, you can use newGrocery for further actions like sending it to an API
-    console.log(newGrocery);
-    
-    const { success, message } = await createGrocery(newGrocery);
+    const { success, message } = await createGrocery(grocery);
     if (!success) {
       toast({
         title: "Error",
@@ -71,14 +61,15 @@ const Navbar = () => {
         isClosable: true
       })
     }
-    setName('');
-    setAmount(0);
-    setCategory('');
-    setUnit('');
-    setPurchasedDate('')
-    setExpirationDate('')
     onClose();
+    setGrocery(groceryObj)
   }
+
+  // Importing hooks for modal, toast, and grocery store functionality.
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const { createGrocery } = useGroceryStore()
+
 
   return (
     <Container maxWidth={"1140px"} px={4}>
@@ -110,32 +101,35 @@ const Navbar = () => {
           <ModalHeader>Add Grocery</ModalHeader>
           <ModalCloseButton/>
           <ModalBody>
-          <VStack spacing={4} alignItems="flex-start"> {/* Ensures all fields are aligned to the left */}
-      <FormControl>
-        <FormLabel>Name of the item</FormLabel>
-        <Input 
+          <VStack spacing={4} alignItems="flex-start"> 
+            {/* Name */}
+            <FormControl>
+              <FormLabel>Name of the item</FormLabel>
+                <Input 
           placeholder="Name of the item"
-          value={name}
+          value={grocery.name}
           onChange={handleNameChange}
          />
-      </FormControl>
+            </FormControl>
 
-      <HStack spacing={4} alignItems="flex-start"> {/* Align the fields inside HStack */}
+      <HStack spacing={4} alignItems="flex-start"> 
+        {/* Quantity */}
         <FormControl>
           <FormLabel>Amount</FormLabel>
           <Input
             placeholder="Amount"
             type="number"
-            value={amount}
-            onChange={handleAmountChange}
+            value={grocery.quantity}
+            onChange={handleQuantityChange}
           />
         </FormControl>
 
+        {/* Unit */}
         <FormControl>
           <FormLabel>Unit</FormLabel>
           <Select
             placeholder="Select unit"
-            value={unit}
+            value={grocery.unit}
             onChange={handleUnitChange}
           >
             <option value="grams">Grams</option>
@@ -151,11 +145,12 @@ const Navbar = () => {
           </Select>
         </FormControl>
 
+        {/* Category */}
         <FormControl>
           <FormLabel>Category</FormLabel>
           <Select
             placeholder="Select category"
-            value={category}
+            value={grocery.category}
             onChange={handleCategoryChange}
           >
             <option value="Dairy">Dairy</option>
@@ -183,7 +178,7 @@ const Navbar = () => {
         <Input
           placeholder="Purchased Date"
           type="date"
-          value={purchasedDate}
+          value={grocery.purchasedDate}
           onChange={handlePurchasedDateChange}
         />
       </FormControl>
@@ -194,7 +189,7 @@ const Navbar = () => {
         <Input
           placeholder="Expiration Date"
           type="date"
-          value={expirationDate}
+          value={grocery.expirationDate}
           onChange={handleExpirationDateChange}
         />
       </FormControl>

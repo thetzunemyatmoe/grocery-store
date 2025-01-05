@@ -5,7 +5,6 @@ import { useGroceryStore } from "../store/grocery";
 import { useState } from "react";
 
 const GroceryDisplay = ({ grocery }) => {
-  const { updateGrocery, deleteGrocery } = useGroceryStore()
   const colorCategory = {
     "Dairy": "blue",
     "Vegetables": "green",
@@ -23,8 +22,11 @@ const GroceryDisplay = ({ grocery }) => {
     "Bakery": "beige",
     "Other": "black",
   };
+  const { updateGrocery, deleteGrocery } = useGroceryStore()
+  
   const toast = useToast();
   const { isOpen, onClose, onOpen } = useDisclosure()
+  
   const [updatedGrocery, setUpdatedGrocery] = useState(grocery)
   const handleUpdatedGrocery = async(grocery) => {
     await updateGrocery(grocery)
