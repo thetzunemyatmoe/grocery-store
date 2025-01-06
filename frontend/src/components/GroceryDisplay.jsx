@@ -1,10 +1,15 @@
 import PropTypes from "prop-types";
-import { Box, Button, FormControl, FormLabel, HStack, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Tag, Text, useDisclosure, useToast, VStack } from "@chakra-ui/react";
+import { Box, HStack, IconButton,  Tag, Text, useDisclosure, useToast} from "@chakra-ui/react";
 import { CheckIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useGroceryStore } from "../store/grocery";
-import { useState } from "react";
+import ManageGrocey from "./ManageGrocey";
 
 const GroceryDisplay = ({ grocery }) => {
+  // Importing hooks for modal, toast, and grocery store functionality.
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { deleteGrocery } = useGroceryStore()
+  const toast = useToast();
+  
   const colorCategory = {
     "Dairy": "blue",
     "Vegetables": "green",
@@ -22,17 +27,8 @@ const GroceryDisplay = ({ grocery }) => {
     "Bakery": "beige",
     "Other": "black",
   };
-  const { updateGrocery, deleteGrocery } = useGroceryStore()
   
-  const toast = useToast();
-  const { isOpen, onClose, onOpen } = useDisclosure()
   
-  const [updatedGrocery, setUpdatedGrocery] = useState(grocery)
-  const handleUpdatedGrocery = async(grocery) => {
-    await updateGrocery(grocery)
-
-    onClose();
-  }
   const handleDeleteGrocery = async(id) => {
     const {success, message} = await deleteGrocery(id)
     if (!success) {
@@ -105,107 +101,7 @@ const GroceryDisplay = ({ grocery }) => {
       </HStack>
 
       {/* Modal for editing grocery */}
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay>
-          <ModalContent>
-            <ModalHeader>
-              Updating grocery
-            </ModalHeader>
-            <ModalCloseButton/>
-
-            <ModalBody>
-              <VStack spacing={4} alignItems="flex-start">
-                {/* Name */}
-                <FormControl>
-                  <FormLabel>Name of the item</FormLabel>
-                  <Input name='name' value={updatedGrocery.name} onChange={(e) => setUpdatedGrocery({...updatedGrocery, name: e.target.value})}/>
-                </FormControl>
-
-                <HStack spacing={4} alignItems="flex-start">
-                  {/* Quantity */}
-                  <FormControl>
-                    <FormLabel>Amount</FormLabel>
-                    <Input type="number" name="quantity" value={updatedGrocery.quantity} onChange={(e) => setUpdatedGrocery({...updatedGrocery, quantity: e.target.value})}/>
-                  </FormControl>
-
-                  {/* Unit */}
-                  <FormControl>
-                    <FormLabel>Unit</FormLabel>
-                    <Select name="unit" value={updatedGrocery.unit} onChange={(e) => setUpdatedGrocery({...updatedGrocery, unit: e.target.value})}>
-                      <option value="grams">Grams</option>
-                      <option value="kilograms">Kilograms</option>
-                      <option value="milliliters">Milliliters</option>
-                      <option value="liters">Liters</option>
-                      <option value="pieces">Pieces</option>
-                      <option value="packs">Packs</option>
-                      <option value="bottles">Bottles</option>
-                      <option value="cans">Cans</option>
-                      <option value="boxes">Boxes</option>
-                      <option value="others">Others</option>
-                    </Select>
-                  </FormControl>
-
-                  {/* Category */}
-                  <FormControl>
-                    <FormLabel>Category</FormLabel>
-                    <Select
-                      name="category"
-                      value={updatedGrocery.category}
-                      onChange={(e) => setUpdatedGrocery({...updatedGrocery, category: e.target.value})}
-                      >
-                      <option value="Dairy">Dairy</option>
-                      <option value="Vegetables">Vegetables</option>
-                      <option value="Fruits">Fruits</option>
-                      <option value="Meat">Meat</option>
-                      <option value="Seafood">Seafood</option>
-                      <option value="Grains">Grains</option>
-                      <option value="Legumes">Legumes</option>
-                      <option value="Snacks">Snacks</option>
-                      <option value="Beverages">Beverages</option>
-                      <option value="Frozen Foods">Frozen Foods</option>
-                      <option value="Spices">Spices</option>
-                      <option value="Condiments">Condiments</option>
-                      <option value="Oils">Oils</option>
-                      <option value="Bakery">Bakery</option>
-                      <option value="Other">Other</option>
-
-                    </Select>
-                  </FormControl>
-                </HStack>
-
-                <FormControl>
-                  <FormLabel>
-                    Purchased Date
-                  </FormLabel>
-
-                  <Input 
-                    type="date"
-                    value={updatedGrocery.purchasedDate ? new Date(updatedGrocery.purchasedDate).toISOString().split("T")[0] : ""}
-                    onChange={(e) => setUpdatedGrocery({...updatedGrocery, purchasedDate: e.target.value })}
-                  />
-                </FormControl>
-
-
-                <FormControl>
-                  <FormLabel>
-                    Purchased Date
-                  </FormLabel>
-
-                  <Input
-                    type="date"
-                    value={updatedGrocery.expirationDate ? new Date(updatedGrocery.expirationDate).toISOString().split("T")[0] : ""}
-                    onChange={(e) => setUpdatedGrocery({ ...updatedGrocery, expirationDate: e.target.value })}
-                  />
-                </FormControl>
-              </VStack>
-            </ModalBody>
-            <ModalFooter>
-              <Button variant={"ghost"} onClick={()=>handleUpdatedGrocery(updatedGrocery)}>Update</Button>
-              <Button variant={"ghost"} onClick={onClose}>Cancel</Button>
-            </ModalFooter>
-          </ModalContent>
-        </ModalOverlay>
-      </Modal>
+      <ManageGrocey onOpen={onOpen} isOpen={isOpen} onClose={onClose} currentGroceryObj={grocery}></ManageGrocey>
     </Box>
   );
 };
