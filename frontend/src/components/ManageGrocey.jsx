@@ -30,7 +30,7 @@ const ManageGrocey = ({ isOpen, onClose, currentGroceryObj }) => {
   };
   const [grocery, setGrocery] = useState(currentGroceryObj || newGroceryObj);
   const toast = useToast();
-  const { createGrocery } = useGroceryStore();
+  const { createGrocery, updateGrocery } = useGroceryStore();
 
   const handleNameChange = (e) => setGrocery({ ...grocery, name: e.target.value });
   const handleUnitChange = (e) => setGrocery({ ...grocery, unit: e.target.value });

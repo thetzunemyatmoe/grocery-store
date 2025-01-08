@@ -9,6 +9,8 @@ const GroceryDisplay = ({ grocery }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { deleteGrocery } = useGroceryStore()
   const toast = useToast();
+
+  console.log(grocery)
   
   const colorCategory = {
     "Dairy": "blue",

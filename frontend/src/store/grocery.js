@@ -49,6 +49,8 @@ export const useGroceryStore = create((set) => ({
     return { success: true, message: data.message }
   },
   updateGrocery: async(grocery) => {
+    console.log(`the grocery to updated is `)
+    console.log(grocery)
     const updatedGrocery = {...grocery, purchasedDate: grocery.purchasedDate.slice(0,10),expirationDate: grocery.expirationDate.slice(0,10)}
 
     const res = await fetch(`/api/grocery/${updatedGrocery._id}`, 
