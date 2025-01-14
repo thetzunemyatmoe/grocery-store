@@ -146,7 +146,7 @@ const ManageGrocey = ({ isOpen, onClose, currentGroceryObj }) => {
                 name="purchasedDate"
                 placeholder="Purchased Date"
                 type="date"
-                value={grocery.purchasedDate}
+                value={grocery.purchasedDate.substring(0, 10)}
                 onChange={handlePurchasedDateChange}
               />
             </FormControl>
@@ -156,7 +156,7 @@ const ManageGrocey = ({ isOpen, onClose, currentGroceryObj }) => {
               <Input
                 placeholder="Expiration Date"
                 type="date"
-                value={grocery.expirationDate}
+                value={grocery.expirationDate.substring(0, 10)}
                 onChange={handleExpirationDateChange}
               />
             </FormControl>

@@ -4,9 +4,11 @@ import mongoose from "mongoose";
 
 // Controller to fetch all the groceries in the database
 export const getGrocery = async(req, res) => {
-  console.log("wsdtu")
+
   try {
     const groceries = await Grocery.find({});
+
+    console.log(groceries)
     res.status(200).json({ 
       success: true,
       data: groceries  
@@ -28,7 +30,6 @@ export const createGrocery = async(req, res) => {
   const groceryObject = new Grocery(grocery);
 
   try {
-    
     await groceryObject.save();
     res.status(200).json({
       success: true,
@@ -47,6 +48,8 @@ export const updateGrocery = async(req, res) => {
   const { id } = req.params;
 
   const grocery = req.body;
+
+  console.log(grocery)
 
   if(!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json(

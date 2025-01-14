@@ -10,7 +10,6 @@ const GroceryDisplay = ({ grocery }) => {
   const { deleteGrocery } = useGroceryStore()
   const toast = useToast();
 
-  console.log(grocery)
   
   const colorCategory = {
     "Dairy": "blue",
